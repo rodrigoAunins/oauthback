@@ -7,12 +7,13 @@ import { JwtModule } from '@nestjs/jwt';
 @Module({
   imports: [
     JwtModule.register({
-      secret: 'secretKey', // Use a more secure secret and keep it in environment variables
+      secret: '456789',
       signOptions: { expiresIn: '1h' },
     }),
-    // ... (your existing imports)
+    // ... other imports
   ],
-  providers: [AuthService,GoogleStrategy],  // ... (your existing providers)
-  controllers: [AuthController],  // ... (your existing controllers)
+  providers: [AuthService, GoogleStrategy],  // JwtModule is removed from here
+  controllers: [AuthController],
+  exports: [JwtModule],
 })
 export class AuthModule {}

@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 @Controller()
 export class AppController {
   constructor(private jwtService: JwtService) {
-    console.log('JWT Secret Key:', this.jwtService.secretOrPrivateKey);
+    //console.log('JWT Secret Key:', this.jwtService.secretOrPrivateKey);
   }
 
   @Get()
