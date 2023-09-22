@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { UserModule } from './auth/user.module';
+import { JwtModule } from '@nestjs/jwt';
 import ormconfig from 'ormconfig';
 
 
@@ -13,7 +14,8 @@ import ormconfig from 'ormconfig';
   imports: [
     TypeOrmModule.forRoot(ormconfig),
     AuthModule,
-    UserModule
+    UserModule,
+    JwtModule
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService],

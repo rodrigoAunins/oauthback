@@ -1,23 +1,32 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { User } from './user.entity';
+
+import { Injectable, Logger } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>,
-  ) {}
+  private readonly logger = new Logger(AuthService.name);
+
+  constructor(private readonly jwtService: JwtService) {}
 
   async validateUser(user: any): Promise<any> {
-    let foundUser = await this.userRepository.findOne({
-      where: { email: user.email }
-    });
-    if (!foundUser) {
-      foundUser = await this.userRepository.save(user);
+    this.logger.log('Validating user...');
+    if (user && user.email) {
+      const foundUser = {
+        id: user.email,  // Use email as the ID if you don't have a separate ID
+        email: user.email,
+        name: `${user.firstName} ${user.lastName}`,
+      };
+      this.logger.log(`User validated: ${JSON.stringify(foundUser)}`);
+  
+      // Create JWT payload and sign it
+      const payload = { username: foundUser.email, sub: foundUser.id };
+      return {
+        access_token: this.jwtService.sign(payload),
+      };
+    } else {
+      this.logger.error('User information is incomplete or undefined.');
+      return null;
     }
-    return foundUser;
   }
   
 }

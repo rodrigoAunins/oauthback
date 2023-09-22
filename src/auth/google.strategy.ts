@@ -1,9 +1,12 @@
+
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-google-oauth20';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
+  private readonly logger = new Logger(GoogleStrategy.name);
+  
   constructor() {
     super({
       clientID: process.env.GOOGLE_CLIENT_ID,
@@ -14,12 +17,14 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   }
 
   async validate(accessToken: string, refreshToken: string, profile: any, done: Function) {
+    this.logger.log(`Google profile received: ${JSON.stringify(profile)}`);
     const { name, emails } = profile;
     const user = {
       email: emails[0].value,
       firstName: name.givenName,
       lastName: name.familyName,
     };
+    this.logger.log(`Processed user info: ${JSON.stringify(user)}`);
     done(null, user);
   }
 }

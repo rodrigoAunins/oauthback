@@ -5,8 +5,8 @@ const ormconfig: TypeOrmModuleOptions = {
   host: 'localhost',
   port: 5432,
   username: 'postgres',
-  password: '1284',
-  database: 'OAuth-Local',
+  password: '5qtxnFd7osVy',
+  database: 'oAuth',
   entities: ['dist/**/*.entity{.ts,.js}'],
   synchronize: true,
 };
